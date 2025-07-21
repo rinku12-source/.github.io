@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Number‑wise Amount Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    textarea, pre { width: 100%; box-sizing: border-box; padding: 10px; }
+    textarea { height: 150px; }
+    button { padding: 10px 20px; margin: 10px 0; cursor: pointer; }
+    pre { background: #fff; min-height: 50px; }
+  </style>
+</head>
+<body>
+  <h1>Number-wise Amount Calculator</h1>
+  <p>WhatsApp group chat messages paste karo yahan (jai­se: <code>20rs10</code>, <code>40rs200</code>).</p>
+  
+  <textarea id="inputText" placeholder="Yahan paste kro..."></textarea>
+  <button onclick="processInput()">Calculate Totals</button>
+  
+  <h2>Results:</h2>
+  <pre id="output"></pre>
+
+  <script>
+    function processInput() {
+      const text = document.getElementById('inputText').value.trim();
+      const lines = text.split(/[\r\n]+/);
+      const totals = {};
+
+      lines.forEach(line => {
+        const match = line.match(/^(\d+)\s*rs\s*(\d+)$/i);
+        if (match) {
+          const num = match[1];
+          const amt = parseInt(match[2], 10);
+          totals[num] = (totals[num] || 0) + amt;
+        }
+      });
+
+      const outputEl = document.getElementById('output');
+      const entries = Object.entries(totals);
+      if (entries.length === 0) {
+        outputEl.textContent = "No valid 'numberrsamount' lines found.";
+        return;
+      }
+
+      let resultText = '';
+      entries.forEach(([num, total]) => {
+        resultText += ${num} → ₹${total}\n;
+      });
+      outputEl.textContent = resultText;
+    }
+  </script>
+</body>
+</html>
